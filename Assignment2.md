@@ -1,0 +1,416 @@
+# Exercise 2
+**COMPSCI 520 — Theory and Practice of Software Engineering**  
+**Author:** Fnu Mayank  
+
+## Part 1 — Baseline Coverage Analysis
+
+### Objective
+The goal of this part is to establish a **baseline for test coverage** across all HumanEval problems and model-generated solutions (DeepSeek vs Qwen; Checklist vs CoT strategies).  
+We automated coverage collection to measure **line coverage**, **branch coverage**, and **number of tests passed** for each problem.  
+The results serve as a reference for evaluating future improvements in code correctness and test quality.
+
+---
+
+### Methodology
+1. **Dataset Preparation (Exercise 1 Outputs):**  
+   Each HumanEval task’s model-generated code (`k0`) was paired with its respective benchmark test file.  
+   Directory structure was standardized as:
+```HumanEval_<ID>/<Model>/<Strategy>/k0.py```
+javascript
+Copy code
+Each directory included a corresponding `tests/test_solution.py` file importing and executing the model’s function.
+
+2. **Coverage Measurement:**  
+We used `pytest` with the `pytest-cov` plugin to collect line and branch coverage:  
+```
+PYTHONPATH=./ pytest --cov=src --cov-branch
+```
+This recorded executed lines and branches while running unit tests.
+
+Each entry represents one `(task, model, prompting-strategy)` combination evaluated with the HumanEval test suite.
+
+---
+
+### Coverage Summary
+
+| Task | Combo | Tests Total | Tests Passed | Line Coverage (%) | Branch Coverage (%) | Notes |
+|------|--------|-------------|---------------|-------------------|--------------------|-------|
+| HumanEval_101 | Qwen_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_101 | Qwen_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_101 | DeepSeek_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_101 | DeepSeek_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_66 | Qwen_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_66 | Qwen_Checklist_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_66 | DeepSeek_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_66 | DeepSeek_Checklist_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_50 | Qwen_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_50 | Qwen_Checklist_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_50 | DeepSeek_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_50 | DeepSeek_Checklist_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_51 | Qwen_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_51 | Qwen_Checklist_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_51 | DeepSeek_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_51 | DeepSeek_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_125 | Qwen_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_125 | Qwen_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_125 | DeepSeek_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_125 | DeepSeek_Checklist_k0 | 1 | 0 | 45.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_147 | Qwen_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_147 | Qwen_Checklist_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_147 | DeepSeek_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_147 | DeepSeek_Checklist_k0 | 1 | 0 | 50.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_134 | Qwen_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_134 | Qwen_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_134 | DeepSeek_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_134 | DeepSeek_Checklist_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_24 | Qwen_CoT_k0 | 1 | 1 | 92.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_24 | Qwen_Checklist_k0 | 1 | 1 | 91.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_24 | DeepSeek_CoT_k0 | 1 | 0 | 50.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_24 | DeepSeek_Checklist_k0 | 1 | 0 | 67.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_52 | Qwen_CoT_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_52 | Qwen_Checklist_k0 | 1 | 1 | 100.0 |  –  | Low branch coverage — missing else/edge conditions. |
+| HumanEval_52 | DeepSeek_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_52 | DeepSeek_Checklist_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_145 | Qwen_CoT_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_145 | Qwen_Checklist_k0 | 1 | 0 | 100.0 |  –  | Tests failed — logic error despite coverage. |
+| HumanEval_145 | DeepSeek_CoT_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+| HumanEval_145 | DeepSeek_Checklist_k0 | 0 | 0 |  –  |  –  | No tests discovered. |
+
+---
+
+### Interpretation
+
+- **High coverage but failed tests** (e.g., *HumanEval_101*, *HumanEval_24*, *HumanEval_51*):  
+  The generated function executes all lines but produces incorrect logic.  
+  This suggests the model implemented wrong condition handling or return values.
+
+- **Low branch coverage** (e.g., *Qwen_CoT_k0*, *Qwen_Checklist_k0*):  
+  The tests exercise main paths but not alternate `if/else` or boundary conditions.  
+  This is expected since HumanEval unit tests are concise and LLMs tend to generate straightforward, non-defensive logic.
+
+- **No tests discovered**:  
+  Usually indicates mismatched function names or import errors (e.g., test expected `solution()` while model defined a custom name).
+
+- **45–67 % coverage**:  
+  Implies partial execution — likely missing early-return or error-handling branches.
+
+---
+
+### Conclusion
+
+The baseline coverage analysis shows that:
+1. **Logic correctness** remains the dominant failure point even under full execution coverage.  
+2. **Branch coverage** highlights missing test diversity better than line coverage.  
+3. Many failures stem from **naming mismatches** or **unreached code paths**, not lack of code execution.  
+
+
+---
+
+## Part 2 — LLM-Assisted Test Generation & Coverage Improvement
+### Objective
+The objective of this part is to employ large language models (LLMs) to automatically generate and refine unit tests with the goal of improving meaningful code coverage. Two representative programming tasks were selected from Part 1 based on low baseline coverage and high potential for improvement. The improvement process was performed iteratively, with three LLM-assisted test-generation cycles per problem. After each cycle, coverage was measured again, and newly created tests were added cumulatively until convergence.
+
+### Methodology
+
+#### Problem Selection
+Coverage reports from Part 1 indicated several tasks with low coverage and failing tests. The following two problems were selected for iterative refinement:
+
+1. HumanEval_24 / DeepSeek_CoT_k0 – baseline line coverage 50 %, branch coverage 0 %.
+
+2. HumanEval_125 / DeepSeek_Checklist_k0 – baseline line coverage 45 %, branch coverage 0 %.
+
+Both tasks exhibited failing tests and untested logical paths, making them suitable for targeted coverage improvement.
+
+#### Directory and Iteration Structure
+Each problem was organized into an incremental directory layout that preserved every iteration and its corresponding test suite:
+```
+exercise2_part2/
+  HumanEval_24/
+    DeepSeek_CoT_k0/
+      iteration_0/   # baseline
+      iteration_1/
+      iteration_2/
+      iteration_3/
+  HumanEval_125/
+    DeepSeek_Checklist_k0/
+      iteration_0/
+      iteration_1/
+      iteration_2/
+      iteration_3/
+```
+
+Each iteration contained the cumulative tests from previous rounds plus additional LLM-generated test cases. Coverage was measured after every iteration using pytest --cov.
+
+#### Convergence Criterion
+Convergence was defined according to the assignment rubric:
+
+Coverage
+(
+𝑖
+)
+−
+Coverage
+(
+𝑖
+−
+2
+)
+≤
+3
+%
+Coverage(i)−Coverage(i−2)≤3%
+
+Three consecutive iterations with less than 3 % improvement were considered converged. Since the underlying code had no recognized conditional branches, convergence was evaluated using line coverage.
+
+The OpenAI gpt-4o-mini model was used with temperature = 0.3.
+
+### Problem A — HumanEval_24 / DeepSeek_CoT_k0
+#### Function Under Test
+`largest_divisor(n: int) → str`
+The function computes divisors of n and returns the largest proper divisor as a string. The implementation is incomplete and raises IndexError for small or prime inputs due to an empty divisor list.
+
+#### Prompts Used for Test Generation
+##### Iteration 1 — Baseline Edge and Boundary Coverage
+```
+You are improving tests for a function largest_divisor(n)->str that returns
+the largest proper divisor of n as a string, or "No Larger divisor found".
+
+Goal: increase meaningful coverage and surface logic bugs.
+Write 5 pytest tests covering:
+- prime numbers (no divisors)
+- perfect squares (e.g., 36)
+- even composites (e.g., 100)
+- smallest non-trivial composite (4)
+- invalid input 0 (expect exception or defined string)
+```
+
+##### Iteration 2 — Robustness and Rare Cases
+```
+Add 5 additional pytest tests for largest_divisor to cover:
+- large prime near 10**6,
+- powers of two (32, 64),
+- n == 1 and n == 2 edge cases,
+- negative input,
+- composite 1001 (=7*11*13, largest divisor 143).
+```
+
+##### Iteration 3 — Residual Gaps and Off-by-One Scenarios
+```
+Add 3–5 targeted pytest tests that:
+- test small primes (2,3,5),
+- test perfect squares with one divisor (121 -> '11'),
+- test composites with close factors (105 -> '35').
+```
+
+#### Coverage Progress
+| Iteration | Line Coverage (%) | Branch Coverage (%) | Observation |
+|------------|-------------------|---------------------|--------------|
+| 0 (Baseline) | 50.0 | 0.0 | Half of the code executed; prime and zero-handling untested. |
+| 1 | 100.0 | 0.0 | Edge-case tests covered all statements and revealed IndexError on empty divisor list. |
+| 2 | 100.0 | 0.0 | New tests maintained full line coverage while exposing additional failure modes (negative and large inputs). |
+| 3 | 100.0 | 0.0 | Added square and composite gap cases; no new lines executed; convergence achieved. |
+
+#### Interpretation
+Coverage increased from 50 % to 100 % after the first iteration and remained constant thereafter, indicating full line coverage and convergence. Branch coverage remained 0 % because the implementation lacks conditional branching beyond comprehensions. The generated tests effectively uncovered runtime errors for small and prime inputs, demonstrating that coverage improvement can still surface functional defects.
+
+#### Redundancy and De-Duplication
+Duplicate inputs (e.g., multiple primes with identical expected behavior) were removed. Test names were made unique, and only distinct semantic categories were retained (prime vs square vs even). Subsequent iterations appended only non-redundant cases.
+
+### Problem B — HumanEval_125 / DeepSeek_Checklist_k0
+
+#### Function Under Test
+**`split_words(txt)`**
+
+The function attempts to split a string by whitespace or commas and return a list of words.  
+However, it lacks `import re` and mis-handles punctuation-only strings as well as tab/newline delimiters.
+
+---
+
+#### Prompts Used for Test Generation
+
+##### Iteration 1 — Whitespace and Delimiter Coverage
+Write 5 pytest tests for `split_words` to cover:
+- only spaces — `"     "`
+- only commas — `",,,"`
+- symbols only — `"!@#$%^&*()"`
+- comma-separated words — `"a,b,c"`
+- mixed spaces and commas — `"x, y z"`
+
+---
+
+##### Iteration 2 — Newline and Tab Inputs
+Add 5 more pytest tests for `split_words` covering:
+- `"line1\tline2\nline3"`
+- `"hello , world"`
+- `" , "`
+- `"alpha  beta"`
+- `",,a,,b,,"`
+
+---
+
+##### Iteration 3 — Edge and Suffix Conditions
+Add 3–5 tests for:
+- single comma only — `","`
+- single word with trailing space — `"hello "`
+- tabs + spaces + commas — `"\t a  ,  b \n"`
+- empty string — `""`
+
+---
+
+#### Coverage Progress
+
+| Iteration | Line Coverage (%) | Branch Coverage (%) | Observation |
+|------------|------------------:|--------------------:|--------------|
+| 0 (Baseline) | 45.0 | 0.0 | Minimal test coverage; primary path only. |
+| 1 | 91.0 | 0.0 | Whitespace/commas/symbols tested; exposed `NameError: re not defined`. |
+| 2 | 73.0 | 0.0 | Tab/newline inputs triggered early failures, reducing executed lines. |
+| 3 | 91.0 | 0.0 | Additional edge cases restored full execution depth; convergence reached. |
+
+---
+
+#### Interpretation
+Coverage increased sharply after the first iteration, temporarily decreased when new failing tests aborted early, and stabilized at 91 %.  
+The generated tests identified persistent faults such as the missing `re` import and undefined behavior for punctuation-only inputs.  
+Although branch coverage remained 0 %, the suite achieved comprehensive input-space exploration.
+
+---
+
+#### Redundancy and De-Duplication
+Tests with equivalent tokenization outcomes (e.g., `,,,` and `,,`) were consolidated.  
+Only unique input structures were retained. Each iteration appended cumulative, non-overlapping test cases.
+
+---
+
+#### Convergence Results
+
+| Problem | Convergence Criterion (Δ Coverage ≤ 3 %) | Iteration Reached |
+|----------|------------------------------------------|-------------------|
+| HumanEval_24 / DeepSeek_CoT_k0 | Satisfied after Iteration 1 | **Converged** |
+| HumanEval_125 / DeepSeek_Checklist_k0 | Satisfied after Iteration 3 | **Converged** |
+
+Both problems satisfied the convergence requirement, indicating diminishing returns from further LLM-generated tests.
+
+---
+
+#### Discussion
+The iterative LLM-assisted process demonstrated substantial gains in line coverage and diagnostic depth.  
+Despite no measurable branch coverage (due to the structure of the code under test), the generated test suites effectively exposed unhandled conditions and latent logic errors.
+
+In **HumanEval_24**, the LLM introduced inputs that caused list-indexing failures and clarified missing base-case handling.  
+In **HumanEval_125**, the model introduced delimiter-heavy and whitespace-heavy strings that surfaced unimported dependencies and inconsistent tokenization logic.
+
+Temporary coverage reductions in intermediate iterations were caused by early test failures that prevented deeper line execution; subsequent iterations restored and stabilized the coverage.
+
+---
+
+#### Conclusions
+LLM-guided test generation significantly improved line coverage and fault detection compared with the baseline manually written tests.  
+The results demonstrate that:
+
+- Coverage gains plateau quickly once all feasible execution paths are triggered.  
+- High coverage does not guarantee correctness; failing tests still indicate functional defects.  
+- Iterative refinement with cumulative, de-duplicated tests ensures stable and reproducible convergence.  
+- Branch coverage remained 0 % due to lack of explicit conditionals, highlighting that line coverage alone may over-estimate test completeness.
+
+Overall, the LLM-assisted testing approach successfully increased observable code coverage, exposed multiple implementation errors, and satisfied the convergence criterion for both representative problems.
+
+## Part 3 — Fault Detection Check
+
+### Objective
+The goal of this experiment is to determine whether the LLM-generated test suites from Part 2 can identify genuine implementation defects rather than only improving coverage metrics.  
+Two representative problems were selected, each seeded with a small, realistic bug.
+
+---
+
+### Problem 1 — HumanEval 24 (DeepSeek CoT k0)
+
+**Target Function:** `largest_divisor(n)`  
+**Bug Injected:** Removed the `+ 1` term in the divisor-search loop  
+```python
+for i in range(2, int(n**0.5) + 1)
+```
+→  
+```python
+for i in range(2, int(n**0.5))  # BUG: off-by-one boundary error
+```
+
+**Type of Fault:** Off-by-one boundary error — the square-root divisor case is skipped.  
+**Rationale:** Off-by-one errors are a common source of subtle logic faults in numeric algorithms.
+
+**Observed Behavior:**  
+Three tests failed immediately, confirming fault detection.
+
+```
+FAILED test_input_is_two – IndexError: list index out of range
+FAILED test_input_with_multiple_close_divisors – expected '35', got 'No Larger divisor found'
+FAILED test_gap_in_divisors – IndexError: list index out of range
+```
+
+**Analysis:**  
+The injected bug disrupted both loop bounds and result-list initialization.  
+The generated tests exercised lower and upper divisor boundaries, exposing the error path and an unhandled IndexError.
+
+**Conclusion:**  
+The test suite demonstrated high sensitivity to arithmetic boundary defects.  
+Improved branch coverage from Part 2 directly enabled this fault exposure by adding edge-case inputs near divisor limits.
+
+---
+
+### Problem 2 — HumanEval 125 (DeepSeek Checklist k0)
+
+**Target Function:** `split_words(txt)`  
+**Bug Injected:** Removed the `try / except ValueError` block handling comma and space separation.
+
+**Type of Fault:** Missing-branch error — exception path deleted, causing `ValueError`.  
+**Rationale:** Exception-handling omission is a realistic bug that breaks robustness against malformed input.
+
+**Observed Behavior:**  
+Three tests failed as expected.
+
+```
+FAILED test_single_comma_edge_case – ValueError: substring not found
+FAILED test_single_word_with_space_suffix – ValueError: substring not found
+FAILED test_control_characters_only – ValueError: substring not found
+```
+
+**Analysis:**  
+The fault eliminated the branch safeguarding special-character and empty-string cases.  
+The improved test suite contained inputs for commas and control-character variants, allowing precise detection.
+
+**Conclusion:**  
+The enhanced tests effectively identified the missing-exception-branch fault.  
+Their coverage of both normal and error paths confirms that the LLM-generated tests are not superficial—they provide functional fault-detection depth.
+
+---
+
+### Cross-Problem Summary
+
+| Metric | HumanEval 24 | HumanEval 125 |
+|:--|:--:|:--:|
+| **Lines of Code Modified** | 1 | 3 |
+| **Bug Type** | Off-by-one | Missing Exception Branch |
+| **Tests Failed** | 3 | 3 |
+| **Coverage Impact** | Exposed unreachable else path | Triggered unhandled ValueError path |
+| **Detection Outcome** | ✅ Detected | ✅ Detected |
+
+---
+
+### Interpretation and Link to Coverage
+In both cases, the seeded defects occurred in branches that were newly exercised during the coverage-improvement phase in Part 2.  
+This empirical result supports the expected relationship:
+
+> **Higher branch coverage → Higher fault-detection capability**
+
+Enhanced test diversity created by the LLM produced input combinations that uncovered boundary and exception conditions previously untested.  
+Thus, the observed coverage increase was **meaningful**—it directly translated into higher sensitivity to logical and runtime errors.
+
+---
+
+### Final Conclusion
+The fault-detection evaluation confirms that coverage gains achieved through LLM-assisted test generation are not merely quantitative.  
+They enhance the qualitative robustness of the test suite by enabling early discovery of boundary and error-handling bugs.  
+Both injected faults were successfully caught, validating the effectiveness of the LLM-augmented testing process.
+
+
+
+

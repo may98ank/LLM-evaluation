@@ -1,163 +1,150 @@
-import os, json, shutil, subprocess, time, random, requests
-from openai import OpenAI
+import os
+import shutil
+import json
+import subprocess
 
-# === CONFIG ===
+# ====================== CONFIG ======================
+
 BASE_SOURCE = "exercise2_data_singlek"
-TARGET_BASE = "exercise2_part2"
-ITERATIONS = 3
-MODEL = "gpt-4o-mini"  # try gpt-3.5-turbo if needed
+TARGET_BASE = "exercise2_part2_manual"
 SELECTED = [
+    ("HumanEval_24", "DeepSeek_CoT_k0"),
     ("HumanEval_125", "DeepSeek_Checklist_k0"),
-    ("HumanEval_24", "DeepSeek_CoT_k0")
 ]
+ITERATIONS = 3
 
-# === RATE / THROTTLE SETTINGS ===
-MAX_TOKENS_PER_CALL = 20000
-SECONDS_BETWEEN_CALLS = 70   # 1 call per minute
-BACKOFF_BASE = 60             # retry delay base for 429s
+# ====================== HELPERS ======================
 
-# === INITIALIZE ===
-client = OpenAI(api_key="")
-
-# --- Helpers ---
 def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
 
-def copy_baseline(task, combo):
-    src_path = os.path.join(BASE_SOURCE, task, combo)
-    dest_path = os.path.join(TARGET_BASE, task, combo, "iteration_0")
-    ensure_dir(dest_path)
-    shutil.copytree(src_path, dest_path, dirs_exist_ok=True)
-    return dest_path
+def read_file(path):
+    return open(path).read() if os.path.exists(path) else ""
+
+def write_file(path, content):
+    ensure_dir(os.path.dirname(path))
+    with open(path, "w") as f:
+        f.write(content)
 
 def run_coverage(iter_dir):
     env = os.environ.copy()
     env["PYTHONPATH"] = "./"
-    cmd = ["pytest", "--cov=src", "--cov-branch", "--cov-report=term", "-q"]
-    result = subprocess.run(cmd, cwd=iter_dir, capture_output=True, text=True, env=env)
-    return result.stdout + result.stderr
-
-def extract_cov(text):
-    """Parse pytest output for line & branch coverage."""
-    line_cov, branch_cov = None, None
-    for line in text.splitlines():
-        if "TOTAL" in line:
-            parts = line.split()
+    proc = subprocess.run(
+        ["pytest", "--cov=src", "--cov-branch", "-q"],
+        cwd=iter_dir,
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    out = proc.stdout + "\n" + proc.stderr
+    line_cov = 0.0
+    branch_cov = 0.0
+    for line in out.splitlines():
+        if "TOTAL" in line and "%" in line:
             try:
+                parts = line.split()
                 line_cov = float(parts[-1].replace("%", ""))
             except Exception:
                 pass
-    return line_cov, branch_cov
+    return line_cov, branch_cov, out
 
-# === Local Ollama fallback ===
-def ollama_generate(prompt, model="qwen2.5-coder:3b"):
-    body = {"model": model, "prompt": prompt, "stream": False, "options": {"temperature": 0.3}}
-    try:
-        r = requests.post("http://localhost:11434/api/generate", json=body, timeout=120)
-        return r.json().get("response", "")
-    except Exception as e:
-        print(f"⚠️ Ollama fallback failed: {e}")
-        return ""
+# ====================== PROMPTS ======================
 
-# === Throttled OpenAI generation ===
-def safe_generate(prompt):
-    """Auto-throttle & retry if rate limit or network errors occur."""
-    for attempt in range(4):
-        try:
-            resp = client.responses.create(model=MODEL, input=prompt, temperature=0.3)
-            text = resp.output_text.strip()
-            print(f"✅ LLM response received ({len(text)} chars).")
-            time.sleep(SECONDS_BETWEEN_CALLS)  # pacing
-            return text
-        except Exception as e:
-            if "Rate limit" in str(e) or "429" in str(e):
-                wait = BACKOFF_BASE * (2 ** attempt) + random.randint(0, 30)
-                print(f"⏳ Rate limit reached — waiting {wait}s before retry...")
-                time.sleep(wait)
-            else:
-                print(f"⚠️ OpenAI error ({e}) — falling back to Ollama.")
-                return ollama_generate(prompt)
-    print("❌ Exhausted retries — skipping iteration.")
-    return ""
+def build_prompt(code: str, prev_tests: str, iteration: int) -> str:
+    prev_tests = prev_tests[-2000:] if len(prev_tests) > 2000 else prev_tests
+    base = f"Code:\n{code}\n\nExisting tests:\n{prev_tests}\n\n"
+    if iteration == 1:
+        return base + (
+            "You are a Python QA engineer. Add 5 pytest test cases that increase line and branch coverage "
+            "by targeting edge cases, invalid inputs, and alternate branches. Return only valid Python code."
+        )
+    elif iteration == 2:
+        return base + (
+            "Add 5 more tests that explore hidden branches, exception cases, and non-trivial input combinations. "
+            "Avoid duplicating existing test inputs. Return only valid Python code."
+        )
+    else:
+        return base + (
+            "Add 3 unique high-value test cases for rare conditions not yet tested. "
+            "Focus on branches skipped so far. Return only valid pytest code."
+        )
 
-# === Main routine ===
-def improve_tests(task, combo):
-    print(f"\n=== Running LLM-assisted iterations for {task}/{combo} ===")
-    combo_path = os.path.join(TARGET_BASE, task, combo)
-    ensure_dir(combo_path)
-    coverage_history = []
+# ====================== MAIN PIPELINE ======================
 
-    # baseline copy
-    baseline = copy_baseline(task, combo)
-    coverage = run_coverage(baseline)
-    lcov, bcov = extract_cov(coverage)
-    coverage_history.append({"iteration": 0, "line": lcov, "branch": bcov})
-    print(f"Baseline: line={lcov}, branch={bcov}")
+def main():
+    coverage_history = {}
 
-    for i in range(1, ITERATIONS + 1):
-        prev_iter = os.path.join(combo_path, f"iteration_{i-1}")
-        next_iter = os.path.join(combo_path, f"iteration_{i}")
-        ensure_dir(next_iter)
-        ensure_dir(os.path.join(next_iter, "tests"))
-        ensure_dir(os.path.join(next_iter, "src"))
+    for task, combo in SELECTED:
+        src_dir = os.path.join(BASE_SOURCE, task, combo)
+        dest_root = os.path.join(TARGET_BASE, task, combo)
+        ensure_dir(dest_root)
+        print(f"\n🧱 Setting up {task}/{combo}")
 
-        # Copy solution forward
-        shutil.copytree(os.path.join(prev_iter, "src"), os.path.join(next_iter, "src"), dirs_exist_ok=True)
+        # ---------- iteration_0 baseline ----------
+        iter0 = os.path.join(dest_root, "iteration_0")
+        shutil.copytree(src_dir, iter0, dirs_exist_ok=True)
+        line0, branch0, _ = run_coverage(iter0)
+        coverage_history[f"{task}/{combo}"] = [{"iteration": 0, "line": line0, "branch": branch0}]
+        prev_iter = iter0
 
-        # Read code & partial tests
-        code_file = os.path.join(prev_iter, "src/solution.py")
-        test_file = os.path.join(prev_iter, "tests/test_solution.py")
-        with open(code_file) as f: code = f.read()
-        with open(test_file) as f: old_tests = f.read()
+        # ---------- Manual iterations ----------
+        for i in range(1, ITERATIONS + 1):
+            iter_dir = os.path.join(dest_root, f"iteration_{i}")
+            ensure_dir(os.path.join(iter_dir, "src"))
+            ensure_dir(os.path.join(iter_dir, "tests"))
 
-        # Reduce prompt size
-        tail_tests = "\n".join(old_tests.splitlines()[-40:])
+            # Copy solution
+            shutil.copy(
+                os.path.join(prev_iter, "src", "solution.py"),
+                os.path.join(iter_dir, "src", "solution.py"),
+            )
 
-        prompt = f"""
-You are improving a pytest suite to increase branch coverage.
-Below is the Python function followed by the *last 40 lines* of current tests.
+            code = read_file(os.path.join(iter_dir, "src", "solution.py"))
+            prev_tests = read_file(os.path.join(prev_iter, "tests", "test_solution.py"))
+            if "def test_generated" in prev_tests:
+                prev_tests = prev_tests.split("def test_generated")[0]
 
-### Function
-{code}
+            prompt = build_prompt(code, prev_tests, i)
 
-### Existing tests
-{tail_tests}
+            print("\n" + "="*100)
+            print(f"📜 Prompt for iteration {i} — {task}/{combo}:\n")
+            print(prompt)
+            print("="*100)
+            print(f"✋ Paste this prompt into ChatGPT and save the generated code in:\n"
+                  f"  → {os.path.join(iter_dir, 'llm_output.txt')}\n"
+                  f"Then press ENTER to continue.")
+            input("Press ENTER when ready...")
 
-Add 3-5 new pytest test functions that explore:
-- Edge conditions
-- Alternate branches (if/else, exceptions)
-Avoid duplicates. Name them test_case_<n>.
-Return only Python test code, no explanations.
-"""
+            llm_output = read_file(os.path.join(iter_dir, "llm_output.txt"))
+            if not llm_output.strip():
+                print("⚠️ No llm_output.txt found. Skipping this iteration.")
+                continue
 
-        print(f"Iteration {i}: generating improved tests...")
-        new_tests = safe_generate(prompt)
+            # Extract code portion if wrapped in ```
+            if "```" in llm_output:
+                parts = llm_output.split("```")
+                for i, part in enumerate(parts):
+                    if part.strip().startswith("python"):
+                        llm_output = parts[i + 1]
+                        break
 
-        # Merge and save
-        merged = old_tests + "\n\n# === LLM iteration {} ===\n".format(i) + new_tests
-        out_test = os.path.join(next_iter, "tests/test_solution.py")
-        with open(out_test, "w") as f: f.write(merged)
+            merged_tests = f"from src.solution import *\nimport pytest\n\n{llm_output.strip()}\n"
+            write_file(os.path.join(iter_dir, "tests", "test_solution.py"), merged_tests)
 
-        # Run coverage
-        print(f"Iteration {i}: running coverage...")
-        cov_out = run_coverage(next_iter)
-        lcov, bcov = extract_cov(cov_out)
-        coverage_history.append({"iteration": i, "line": lcov, "branch": bcov})
-        print(f"Iteration {i}: line={lcov}, branch={bcov}")
+            # Run coverage
+            line_cov, branch_cov, out = run_coverage(iter_dir)
+            coverage_history[f"{task}/{combo}"].append({
+                "iteration": i,
+                "line": line_cov,
+                "branch": branch_cov,
+                "stdout": out[:4000],
+            })
+            print(f"✅ Iteration {i} complete — line={line_cov:.1f}%, branch={branch_cov:.1f}%\n")
 
-        # Convergence check
-        if i >= 2:
-            prev2 = coverage_history[-3]["line"] or 0
-            curr = coverage_history[-1]["line"] or 0
-            if abs(curr - prev2) <= 3:
-                print(f"✅ Converged after {i} iterations (<3%)")
-                break
+            prev_iter = iter_dir
 
-    cov_path = os.path.join(combo_path, "coverage.json")
-    with open(cov_path, "w") as f:
-        json.dump(coverage_history, f, indent=2)
-    print(f"✅ Saved → {cov_path}")
+    write_file(os.path.join(TARGET_BASE, "manual_coverage_history.json"), json.dumps(coverage_history, indent=2))
+    print("\n✅ Completed manual test generation for all problems!")
 
-# === Run selected tasks ===
-for task, combo in SELECTED:
-    improve_tests(task, combo)
+if __name__ == "__main__":
+    main()
