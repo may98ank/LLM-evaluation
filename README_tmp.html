@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="evaluation-of-code-generation-strategies-with-locally-running-llms">Evaluation of Code Generation Strategies with Locally Running LLMs</h1>
+<p><strong>GitHub Repository:</strong> <a href="https://github.com/may98ank/LLM-evaluation">https://github.com/may98ank/LLM-evaluation</a></p>
+<h2 id="1-experimental-setup">1. Experimental Setup</h2>
+<ul>
+<li><strong>Dataset:</strong> HumanEvalPlus (10 tasks)</li>
+<li><strong>Platform:</strong> macOS + Ollama</li>
+<li><strong>Models (Families):</strong> Qwen (<code>qwen2.5-coder:3b</code>), DeepSeek (<code>deepseek-coder:1.3b</code>)</li>
+<li><strong>Strategies:</strong> Chain-of-Thought (CoT), Checklist (innovation), Self-Repair (for failures)</li>
+<li><strong>Metric:</strong> pass@k with k=3, temperature=0.2</li>
+</ul>
+<h2 id="2-global-results">2. Global Results</h2>
+<table>
+<thead>
+<tr>
+<th>strategy</th>
+<th>family</th>
+<th>mean_pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Checklist</td>
+<td>DeepSeek</td>
+<td>0.9</td>
+</tr>
+<tr>
+<td>Checklist</td>
+<td>Qwen</td>
+<td>1</td>
+</tr>
+<tr>
+<td>CoT</td>
+<td>DeepSeek</td>
+<td>0.6</td>
+</tr>
+<tr>
+<td>CoT</td>
+<td>Qwen</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-per-task-results">3. Per-Task Results</h2>
+<h4 id="task-101">Task: <code>101</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-25">Task: <code>25</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>Self-Repair</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-134">Task: <code>134</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-145">Task: <code>145</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>Self-Repair</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-147">Task: <code>147</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-24">Task: <code>24</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-50">Task: <code>50</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-51">Task: <code>51</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-52">Task: <code>52</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="task-66">Task: <code>66</code></h4>
+<table>
+<thead>
+<tr>
+<th>family</th>
+<th>strategy</th>
+<th>k</th>
+<th>passes</th>
+<th>pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeepSeek</td>
+<td>Checklist</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>DeepSeek</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>Checklist</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Qwen</td>
+<td>CoT</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-failure--self-repair-cases">4. Failure &amp; Self-Repair Cases</h2>
+<table>
+<thead>
+<tr>
+<th>task_id</th>
+<th>original_strategy</th>
+<th>family</th>
+<th>repair_pass@k</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>125</td>
+<td>CoT</td>
+<td>DeepSeek</td>
+<td>0</td>
+</tr>
+<tr>
+<td>145</td>
+<td>Checklist</td>
+<td>DeepSeek</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><code>repair_pass@k = 1</code> means the self-repair attempt generated at-least one passing solution.</p>
+<h2 id="5-innovation-checklist-prompt">5. Innovation: Checklist Prompt</h2>
+<p><strong>Logic:</strong> Tells models to list down all edge cases before start working on coding, then delete the checklist and return only the runnable code.</p>
+<p><strong>Observation:</strong> There was a increase in pass@k vs CoT by adding explicit handling of boundary conditions.</p>
+<h2 id="6-reproducibility">6. Reproducibility</h2>
+<ul>
+<li><strong>Models:</strong> qwen2.5-coder:3b, deepseek-coder:1.3b</li>
+<li><strong>Dataset:</strong> evalplus/humanevalplus</li>
+<li><strong>Params:</strong> tasks=10, k=3, temperature=0.2</li>
+<li><strong>Files produced:</strong>
+<ul>
+<li><code>results/results_attempts.csv</code></li>
+<li><code>results/results_pass_at_k.csv</code></li>
+<li><code>results/results_prompts.jsonl</code></li>
+<li><code>generated-code/</code> (all generations, organized)</li>
+</ul>
+</li>
+</ul>
+<h2 id="original-10-problem-prompts">Original 10 Problem Prompts</h2>
+<h3 id="humaneval66">HumanEval/66</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def digitSum(s):
+    &quot;&quot;&quot;Task
+    Write a function that takes a string as input and returns the sum of the upper characters only'
+    ASCII codes.
+
+    Examples:
+        digitSum(&quot;&quot;) =&gt; 0
+        digitSum(&quot;abAB&quot;) =&gt; 131
+        digitSum(&quot;abcCd&quot;) =&gt; 67
+        digitSum(&quot;helloE&quot;) =&gt; 69
+        digitSum(&quot;woArBld&quot;) =&gt; 131
+        digitSum(&quot;aAaaaXa&quot;) =&gt; 153
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval101">HumanEval/101</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def words_string(s):
+    &quot;&quot;&quot;
+    You will be given a string of words separated by commas or spaces. Your task is
+    to split the string into words and return an array of the words.
+    
+    For example:
+    words_string(&quot;Hi, my name is John&quot;) == [&quot;Hi&quot;, &quot;my&quot;, &quot;name&quot;, &quot;is&quot;, &quot;John&quot;]
+    words_string(&quot;One, two, three, four, five, six&quot;) == [&quot;One&quot;, &quot;two&quot;, &quot;three&quot;, &quot;four&quot;, &quot;five&quot;, &quot;six&quot;]
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval125">HumanEval/125</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def split_words(txt):
+    '''
+    Given a string of words, return a list of words split on whitespace, if no whitespaces exists in the text you
+    should split on commas ',' if no commas exists you should return the number of lower-case letters with odd order in the
+    alphabet, ord('a') = 0, ord('b') = 1, ... ord('z') = 25
+    Examples
+    split_words(&quot;Hello world!&quot;) ➞ [&quot;Hello&quot;, &quot;world!&quot;]
+    split_words(&quot;Hello,world!&quot;) ➞ [&quot;Hello&quot;, &quot;world!&quot;]
+    split_words(&quot;abcdef&quot;) == 3 
+    '''
+</div></code></pre>
+<h3 id="humaneval147">HumanEval/147</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def get_max_triples(n):
+    &quot;&quot;&quot;
+    You are given a positive integer n. You have to create an integer array a of length n.
+        For each i (1 ≤ i ≤ n), the value of a[i] = i * i - i + 1.
+        Return the number of triples (a[i], a[j], a[k]) of a where i &lt; j &lt; k, 
+    and a[i] + a[j] + a[k] is a multiple of 3.
+
+    Example :
+        Input: n = 5
+        Output: 1
+        Explanation: 
+        a = [1, 3, 7, 13, 21]
+        The only valid triple is (1, 7, 13).
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval145">HumanEval/145</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def order_by_points(nums):
+    &quot;&quot;&quot;
+    Write a function which sorts the given list of integers
+    in ascending order according to the sum of their digits.
+    Note: if there are several items with similar sum of their digits,
+    order them based on their index in original list.
+
+    For example:
+    &gt;&gt;&gt; order_by_points([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]
+    &gt;&gt;&gt; order_by_points([]) == []
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval24">HumanEval/24</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+
+def largest_divisor(n: int) -&gt; int:
+    &quot;&quot;&quot; For a given number n, find the largest number that divides n evenly, smaller than n
+    &gt;&gt;&gt; largest_divisor(15)
+    5
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval51">HumanEval/51</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+
+def remove_vowels(text):
+    &quot;&quot;&quot;
+    remove_vowels is a function that takes string and returns string without vowels.
+    &gt;&gt;&gt; remove_vowels('')
+    ''
+    &gt;&gt;&gt; remove_vowels(&quot;abcdef\nghijklm&quot;)
+    'bcdf\nghjklm'
+    &gt;&gt;&gt; remove_vowels('abcdef')
+    'bcdf'
+    &gt;&gt;&gt; remove_vowels('aaaaa')
+    ''
+    &gt;&gt;&gt; remove_vowels('aaBAA')
+    'B'
+    &gt;&gt;&gt; remove_vowels('zbcd')
+    'zbcd'
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval134">HumanEval/134</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+def check_if_last_char_is_a_letter(txt):
+    '''
+    Create a function that returns True if the last character
+    of a given string is an alphabetical character and is not
+    a part of a word, and False otherwise.
+    Note: &quot;word&quot; is a group of characters separated by space.
+
+    Examples:
+    check_if_last_char_is_a_letter(&quot;apple pie&quot;) ➞ False
+    check_if_last_char_is_a_letter(&quot;apple pi e&quot;) ➞ True
+    check_if_last_char_is_a_letter(&quot;apple pi e &quot;) ➞ False
+    check_if_last_char_is_a_letter(&quot;&quot;) ➞ False 
+    '''
+</div></code></pre>
+<h3 id="humaneval50">HumanEval/50</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+
+def encode_shift(s: str):
+    &quot;&quot;&quot;
+    returns encoded string by shifting every character by 5 in the alphabet.
+    &quot;&quot;&quot;
+    return &quot;&quot;.join([chr(((ord(ch) + 5 - ord(&quot;a&quot;)) % 26) + ord(&quot;a&quot;)) for ch in s])
+
+
+def decode_shift(s: str):
+    &quot;&quot;&quot;
+    takes as input string encoded with encode_shift function. Returns decoded string.
+    &quot;&quot;&quot;
+</div></code></pre>
+<h3 id="humaneval52">HumanEval/52</h3>
+<pre class="hljs"><code><div>Before coding, list a short checklist of edge cases, USE it to guide your solution, then DELETE the checklist and OUTPUT ONLY the final Python code (no prose, no tests).
+
+
+
+def below_threshold(l: list, t: int):
+    &quot;&quot;&quot;Return True if all numbers in the list l are below threshold t.
+    &gt;&gt;&gt; below_threshold([1, 2, 4, 10], 100)
+    True
+    &gt;&gt;&gt; below_threshold([1, 20, 4, 10], 5)
+    False
+    &quot;&quot;&quot;
+</div></code></pre>
+<h2 id="example-generated-code-snippets">Example Generated Code Snippets</h2>
+<h3 id="humaneval52--qwen--cot-k0">HumanEval/52 — Qwen / CoT (k=0)</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">below_threshold</span><span class="hljs-params">(l: list, t: int)</span> -&gt; bool:</span>
+    <span class="hljs-string">"""Return True if all numbers in the list l are below threshold t.
+    &gt;&gt;&gt; below_threshold([1, 2, 4, 10], 100)
+    True
+    &gt;&gt;&gt; below_threshold([1, 20, 4, 10], 5)
+    False
+    """</span>
+    <span class="hljs-comment"># Check if the list is empty or has only one element</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+    
+    <span class="hljs-comment"># Iterate over each element in the list</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> l:
+        <span class="hljs-comment"># If any number is not below the threshold, return False</span>
+        <span class="hljs-keyword">if</span> num &gt;= t:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    
+    <span class="hljs-comment"># If all numbers are below the threshold, return True</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</div></code></pre>
+<h3 id="humaneval24--deepseek--cot-k2">HumanEval/24 — DeepSeek / CoT (k=2)</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">largest_divisor</span><span class="hljs-params">(n: int)</span> -&gt; str :</span> <span class="hljs-comment">#changed the function's type hint from 'int'-&gt;str, as we want to output a string not an integer in our case </span>
+    <span class="hljs-string">""" For given input n find all factors of that number and return maximum factor. This is tricky part will be ignored for final implementation but here it serves purpose."""</span>  
+    
+    <span class="hljs-comment"># Initialize the list with first divisor which would always equal '1' as per definition, no need to check further </span>
+    largest_divisors = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(<span class="hljs-number">2</span> , int(n**<span class="hljs-number">0.5</span>) + <span class="hljs-number">1</span> ) <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span> ]  
+    
+    <span class="hljs-comment"># Append the larger factors after finding smaller ones because a number can have more than one divisor, so we need to find all of them </span>
+    largest_divisors += [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(largest_divisors[<span class="hljs-number">-1</span>] , int(n/<span class="hljs-number">2</span>) + <span class="hljs-number">1</span> , <span class="hljs-number">-1</span> ) <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span> ]  
+    
+    <span class="hljs-comment"># Return the maximum divisor found. If there is no such number, return 'None' </span>
+    largest = max(largest_divisors <span class="hljs-keyword">or</span> [<span class="hljs-number">0</span>])     
+        
+    print(<span class="hljs-string">"Largest Divisible Number: "</span>, int(n) <span class="hljs-keyword">if</span> n % (<span class="hljs-number">1</span> + largest ) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">"No Larger divisor found"</span>) <span class="hljs-comment">#prints the number only when it's a valid result, otherwise prints 'None'.  This is to make sure we are not returning an empty string or None.</span>
+    <span class="hljs-keyword">return</span> str(largest_divis
+</div></code></pre>
+<h3 id="humaneval24--deepseek--cot-k0">HumanEval/24 — DeepSeek / CoT (k=0)</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">largest_divisor</span><span class="hljs-params">(n)</span>:</span>   <span class="hljs-comment"># Step-by step explanation of the problem statement here, then output only final python implementation  (no prose or tests) .</span>
+    <span class="hljs-string">""" For a given number n , find out which is smallest divisible integer that can divide evenly into 'N' and less than N. If there are no such integers return -1 as per requirement."""</span>   <span class="hljs-comment"># Step-by step explanation of the problem statement here, then output only final python implementation  (no prose or tests) .</span>
+    
+    i = n // <span class="hljs-number">2</span> + <span class="hljs-number">1</span>        <span class="hljs-comment"># Start from one more than half to check for even divisibility. This is because all numbers can be divided by two and there's no need of checking if the number itself could divide into 'N'.   (no prose or tests) .</span>
+    
+    <span class="hljs-keyword">while</span> i &gt; <span class="hljs-number">0</span>:           <span class="hljs-comment"># Step-by step explanation here, then output only final python implementation  (no prose). This loop will run until it finds a divisor. If no such integer is found return -1 as per requirement.(No Prose/Tests required.)   No tests are written for this part of the code in Python programming language</span>
+        <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span>:     <span class="hljs-comment"># Step-by step explanation here, then output only final python implementation  (no prose). This condition checks whether 'i' is</span>
+</div></code></pre>
+<h3 id="humaneval24--qwen--checklist-k2">HumanEval/24 — Qwen / Checklist (k=2)</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">largest_divisor</span><span class="hljs-params">(n: int)</span> -&gt; int:</span>
+    <span class="hljs-string">""" For a given number n, find the largest number that divides n evenly, smaller than n """</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>):
+        <span class="hljs-keyword">if</span> n % i == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> i
+
+<span class="hljs-comment"># Test cases</span>
+<span class="hljs-keyword">assert</span> largest_divisor(<span class="hljs-number">15</span>) == <span class="hljs-number">5</span>
+<span class="hljs-keyword">assert</span> largest_divisor(<span class="hljs-number">28</span>) == <span class="hljs-number">14</span>
+<span class="hljs-keyword">assert</span> largest_divisor(<span class="hljs-number">37</span>) == <span class="hljs-number">1</span>  <span class="hljs-comment"># 37 is a prime number</span>
+</div></code></pre>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+task,combo,tests_total,tests_passed,line_coverage,branch_coverage,notes
+HumanEval_101,Qwen_CoT_k0,0,0,,,No tests discovered.
+HumanEval_101,Qwen_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_101,DeepSeek_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_101,DeepSeek_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_66,Qwen_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_66,Qwen_Checklist_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_66,DeepSeek_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_66,DeepSeek_Checklist_k0,0,0,,,No tests discovered.
+HumanEval_50,Qwen_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_50,Qwen_Checklist_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_50,DeepSeek_CoT_k0,0,0,,,No tests discovered.
+HumanEval_50,DeepSeek_Checklist_k0,0,0,,,No tests discovered.
+HumanEval_51,Qwen_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_51,Qwen_Checklist_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_51,DeepSeek_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_51,DeepSeek_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_125,Qwen_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_125,Qwen_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_125,DeepSeek_CoT_k0,0,0,,,No tests discovered.
+HumanEval_125,DeepSeek_Checklist_k0,1,0,45.0,,Tests failed — logic error despite coverage.
+HumanEval_147,Qwen_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_147,Qwen_Checklist_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_147,DeepSeek_CoT_k0,0,0,,,No tests discovered.
+HumanEval_147,DeepSeek_Checklist_k0,1,0,50.0,,Tests failed — logic error despite coverage.
+HumanEval_134,Qwen_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_134,Qwen_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_134,DeepSeek_CoT_k0,0,0,,,No tests discovered.
+HumanEval_134,DeepSeek_Checklist_k0,0,0,,,No tests discovered.
+HumanEval_24,Qwen_CoT_k0,1,1,92.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_24,Qwen_Checklist_k0,1,1,91.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_24,DeepSeek_CoT_k0,1,0,50.0,,Tests failed — logic error despite coverage.
+HumanEval_24,DeepSeek_Checklist_k0,1,0,67.0,,Tests failed — logic error despite coverage.
+HumanEval_52,Qwen_CoT_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_52,Qwen_Checklist_k0,1,1,100.0,,Low branch coverage — missing else/edge conditions.
+HumanEval_52,DeepSeek_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_52,DeepSeek_Checklist_k0,0,0,,,No tests discovered.
+HumanEval_145,Qwen_CoT_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_145,Qwen_Checklist_k0,1,0,100.0,,Tests failed — logic error despite coverage.
+HumanEval_145,DeepSeek_CoT_k0,0,0,,,No tests discovered.
+HumanEval_145,DeepSeek_Checklist_k0,0,0,,,No tests discovered.

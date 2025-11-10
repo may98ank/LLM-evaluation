@@ -1,5 +1,6 @@
 # Evaluation of Code Generation Strategies with Locally Running LLMs
 
+**GitHub Repository:** [https://github.com/may98ank/LLM-evaluation](https://github.com/may98ank/LLM-evaluation)
 
 ## 1. Experimental Setup
 - **Dataset:** HumanEvalPlus (10 tasks)

@@ -1,0 +1,26 @@
+{
+  "HumanEval_125/DeepSeek_Checklist_k0": {
+    "line_covs": [
+      45.0,
+      0.0,
+      0.0
+    ],
+    "branch_covs": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "HumanEval_24/DeepSeek_CoT_k0": {
+    "line_covs": [
+      50.0,
+      0.0,
+      0.0
+    ],
+    "branch_covs": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}
